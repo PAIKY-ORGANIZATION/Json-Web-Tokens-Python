@@ -1,0 +1,6 @@
+dotenv
+flask==3.0.3
+watchdog 
+sqlalchemy
+psycopg2-binary>=2.9.9
+colorama

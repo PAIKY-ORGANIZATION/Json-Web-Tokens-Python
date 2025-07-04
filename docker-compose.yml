@@ -1,0 +1,20 @@
+services:
+  flask:
+    build: .
+    ports:
+      - 3004:3004
+    volumes:
+      - .:/app
+    command: bash script.sh dev_docker
+    depends_on:
+      - db
+  
+  db:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: python-users
+    
