@@ -15,7 +15,7 @@ def signup():
     #? Need to validate data
 
     #* Check if the user already exists.
-    saved = session.query(User).filter(User.username == unique_username)
+    saved = session.query(User).filter(User.username == unique_username).first()
     if saved: return "User already exitss"
 
     #* Create and save the user
@@ -25,7 +25,7 @@ def signup():
     
 
     save_users = session.query(User).all() 
-
+    session.close()
     for user in save_users:
         print(user)
     return "Success"

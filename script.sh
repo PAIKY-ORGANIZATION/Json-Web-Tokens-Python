@@ -1,7 +1,7 @@
 case $1 in
 
 
-    #¡ If the app fails to run with this command it will restart automatically without pointing to a concrete error. Example: a missing port
+    #¡ If the app fails to run with this command it will restart automatically without pointing to a concrete error. Example: a missing port, General syntax error.
     dev_local)
         watchmedo auto-restart \
             --patterns="*.py" \
