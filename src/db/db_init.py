@@ -4,7 +4,7 @@ from sqlalchemy import create_engine, Column, String, Integer
 from sqlalchemy.ext.declarative import declarative_base #$ This is the class that we're going to extend.
 from sqlalchemy.orm import sessionmaker
 import os 
-
+import time
 
 
 
@@ -34,17 +34,19 @@ engine = create_engine(f"postgresql://postgres:postgres@{host}/python-users") #?
 
 
 def init_db():
+    while True:
+        try:
+            Base.metadata.create_all(bind=engine)  #$ This applies the changes to the database (adds the tables) based on the "Base" class
+            #$ bind=engine means: “Use this engine to run the SQL commands that create the tables.”
+            print("Database initialized successfully or was already initialized")
+            break
+        except Exception as e:
+            print(f"Error initializing database: {e}")
+            time.sleep(2)
 
-
-
-    Base.metadata.create_all(bind=engine)  #$ This applies the changes to the database (adds the tables) based on the "Base" class
-    #$ bind=engine means: “Use this engine to run the SQL commands that create the tables.”
-    print("Database initialized successfully or was already initialized")
-
-
-    session = sessionmaker(bind=engine)
-    session = session()
 
 def get_session():
     session = sessionmaker(bind=engine)()
     return session
+
+
