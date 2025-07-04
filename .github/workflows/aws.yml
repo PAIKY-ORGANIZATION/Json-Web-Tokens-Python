@@ -38,6 +38,7 @@ jobs:
               echo "JWT_SECRET=${{secrets.JWT_SECRET}}" >> ./config/shared.env #$ will create shared.env automatically as long as the ./config directory already exists.
               #! JWT_SECRET must be set per-repository
 
+
               #! Did  not include tests in this py project
               sudo docker compose down
               sudo docker compose up --build -d
