@@ -20,24 +20,24 @@ jobs:
           key: ${{secrets.EC2_SSH_PRIVATE_KEY}}
           passphrase: ${{ secrets.EC2_SSH_PRIVATE_KEY_PASSPHRASE }} #$ Only if required.
         
-        script: |
-            UNIQUE_APP_NAME="${{ secrets.UNIQUE_APP_NAME }}"  #! UNIQUE_APP_NAME must be all lowercase and without underscores for Docker to accept it.
-            #! UNIQUE_APP_NAME must be set per-repository
-            #! If you are using Docker COMPOSE,  you don't need a unique app name for the image name. However, you still need a unique directory name.
-            REPO_PATH="${{ github.repository }}"  #$ Example: # gives "dev-miguel/repo-name". We will use this to clone the repo initially. 
-            DOCKER_PORT="${{ secrets.DOCKER_PORTS }}"  #! I know it's not being used here
+          script: |
+              UNIQUE_APP_NAME="${{ secrets.UNIQUE_APP_NAME }}"  #! UNIQUE_APP_NAME must be all lowercase and without underscores for Docker to accept it.
+              #! UNIQUE_APP_NAME must be set per-repository
+              #! If you are using Docker COMPOSE,  you don't need a unique app name for the image name. However, you still need a unique directory name.
+              REPO_PATH="${{ github.repository }}"  #$ Example: # gives "dev-miguel/repo-name". We will use this to clone the repo initially. 
+              DOCKER_PORT="${{ secrets.DOCKER_PORTS }}"  #! I know it's not being used here
 
-            cd ~/vsCodeMain
-            #* If the is no desired-folder with .git, it means the repo doesn't exist so we clone it INTO A DESIRED FOLDER NAME.
-            [ -d "$UNIQUE_APP_NAME/.git"] || git clone git@github.com:$REPO_PATH.git "$UNIQUE_APP_NAME" #! AWS needs to use an SSH key of your github account that DOESN'T USE A PASSPHRASE in order to clone.
-            cd "$UNIQUE_APP_NAME"
-            git fetch origin
-            git merge origin/master
+              cd ~/vsCodeMain
+              #* If the is no desired-folder with .git, it means the repo doesn't exist so we clone it INTO A DESIRED FOLDER NAME.
+              [ -d "$UNIQUE_APP_NAME/.git"] || git clone git@github.com:$REPO_PATH.git "$UNIQUE_APP_NAME" #! AWS needs to use an SSH key of your github account that DOESN'T USE A PASSPHRASE in order to clone.
+              cd "$UNIQUE_APP_NAME"
+              git fetch origin
+              git merge origin/master
 
-            #* Write secrets into ./config/shared.env
-            echo "JWT_SECRET=${{secrets.JWT_SECRET}}" >> ./config/shared.env #$ will create shared.env automatically as long as the ./config directory already exists.
-            #! JWT_SECRET must be set per-repository
+              #* Write secrets into ./config/shared.env
+              echo "JWT_SECRET=${{secrets.JWT_SECRET}}" >> ./config/shared.env #$ will create shared.env automatically as long as the ./config directory already exists.
+              #! JWT_SECRET must be set per-repository
 
-            #! Did  not include tests in this py project
-            sudo docker compose down
-            sudo docker compose up --build -d
+              #! Did  not include tests in this py project
+              sudo docker compose down
+              sudo docker compose up --build -d
