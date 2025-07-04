@@ -34,6 +34,7 @@ engine = create_engine(f"postgresql://postgres:postgres@{host}/python-users") #?
 
 
 def init_db():
+    #* Try to initialize the database every 2 seconds. The database docker service might have already started but not accepting connections yet
     while True:
         try:
             Base.metadata.create_all(bind=engine)  #$ This applies the changes to the database (adds the tables) based on the "Base" class
