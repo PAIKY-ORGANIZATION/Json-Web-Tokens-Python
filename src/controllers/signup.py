@@ -1,16 +1,24 @@
 from typing import Any
 from typing import cast
-from flask import request as req, make_response
+from flask import request as req, make_response, jsonify
+from werkzeug.exceptions import BadRequest
 from src.db.db_init import User, get_session
-from src.api_types import SignupRequest
+# from src.api_types import SignupRequest
 from src.validators.validate_signup import validate_signup_body
 from src.jwt.generate_token import generate_token
 
-
 def signup():
-    body: SignupRequest = req.get_json()
-    username = body["unique_username"]
-    food = body["favorite_food"]
+
+    try:
+        body: Any = req.get_json(force=True)
+    except BadRequest:
+        return jsonify({"error": "Invalid JSON"}), 400
+
+    if not isinstance(body, dict):
+        return jsonify({"error": "Request body must be a JSON object"}), 400
+
+    username: str = body["unique_username"]
+    food: str = body["favorite_food"]
 
     #* Validate and optionally return error
     validation = validate_signup_body(username, food)
