@@ -1,29 +1,26 @@
 from typing import Any
 from typing import cast
-from flask import request as req, make_response, jsonify
+from flask import request as req, make_response
 from src.db.db_init import User, get_session
-# from src.api_types import SignupRequest
+from src.api_types import SignupRequest
 from src.validators.validate_signup import validate_signup_body
 from src.jwt.generate_token import generate_token
 
+
 def signup():
-    body = req.get_json(silent=True)
-    if not isinstance(body, dict):
-        return jsonify({"error": "Invalid or missing JSON"}), 400
+    body: SignupRequest = req.get_json()
+    username = body["unique_username"]
+    food = body["favorite_food"]
 
-    username = body.get("unique_username")
-    food = body.get("favorite_food")
-
-    if not isinstance(username, str) or not isinstance(food, str):
-        return jsonify({"error": "Invalid types"}), 400
-
+    #* Validate and optionally return error
     validation = validate_signup_body(username, food)
     if not validation["status"]:
-        return jsonify({"error": validation["message"]}), 400
+        return validation["message"], 400
 
+    #* Save and optionally return error
     result = save_to_db(username, food)
-    if isinstance(result, tuple):
-        return jsonify({"error": result[0]}), result[1]
+    if isinstance(result, tuple):  #% (error, status_code)
+        return result # type: ignore
 
     user_id = result
     res = make_response("Success")
