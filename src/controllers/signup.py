@@ -1,7 +1,7 @@
 from flask import request as req
 from src.db.db_init import User, get_session
 from src.api_types import SignupRequest
-
+from validators.validate_signup import validate_signup_body
 
 def signup():
 
@@ -10,13 +10,16 @@ def signup():
     unique_username = body["unique_username"]
     favorite_food = body["favorite_food"]
 
+
+    result = validate_signup_body(unique_username=unique_username, favorite_food=favorite_food)
+    status = result["status"]    
+    message = result["message"]    
+
+    print(status, message)
+
     session = get_session()
 
-    #? Need to validate data
 
-    #* Validate data
-    if(not unique_username or not isinstance(unique_username, str)):
-        return "invalid username", 400
 
     #* Check if the user already exists.
     saved = session.query(User).filter(User.username == unique_username).first()
