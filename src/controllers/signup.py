@@ -17,7 +17,6 @@ def signup():
     #* Save and optionally return error
     error = save_to_db(username, food)
     if error: return error
-
     return "Success"
 
 
