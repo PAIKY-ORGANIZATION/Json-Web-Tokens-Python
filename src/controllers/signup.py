@@ -6,36 +6,35 @@ from src.db.db_init import User, get_session
 # from src.api_types import SignupRequest
 from src.validators.validate_signup import validate_signup_body
 from src.jwt.generate_token import generate_token
+from flask import request as req, make_response, jsonify
+from src.db.db_init import User, get_session
+from src.validators.validate_signup import validate_signup_body
+from src.jwt.generate_token import generate_token
+
 
 def signup():
-
-    try:
-        body: Any = req.get_json(force=True)
-    except BadRequest:
-        return jsonify({"error": "Invalid JSON"}), 400
-
+    body = req.get_json(silent=True)
     if not isinstance(body, dict):
-        return jsonify({"error": "Request body must be a JSON object"}), 400
+        return jsonify({"error": "Invalid or missing JSON"}), 400
 
+    username = body.get("unique_username")
+    food = body.get("favorite_food")
 
-    username: str = body["unique_username"]
-    food: str = body["favorite_food"]
+    if not isinstance(username, str) or not isinstance(food, str):
+        return jsonify({"error": "Invalid types"}), 400
 
-    #* Validate and optionally return error
     validation = validate_signup_body(username, food)
     if not validation["status"]:
-        return validation["message"], 400
+        return jsonify({"error": validation["message"]}), 400
 
-    #* Save and optionally return error
     result = save_to_db(username, food)
-    if isinstance(result, tuple):  #% (error, status_code)
-        return result # type: ignore
+    if isinstance(result, tuple):
+        return jsonify({"error": result[0]}), result[1]
 
     user_id = result
     res = make_response("Success")
     generate_token(user_id=user_id, res=res)
     return res
-
 
 
 
