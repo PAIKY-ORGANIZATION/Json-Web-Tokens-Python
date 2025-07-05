@@ -17,6 +17,7 @@ def signup():
     if not isinstance(body, dict):
         return jsonify({"error": "Request body must be a JSON object"}), 400
 
+
     username: str = body["unique_username"]
     food: str = body["favorite_food"]
 
