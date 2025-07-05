@@ -8,7 +8,7 @@ from src.controllers.logout import logout
 def endpoint_signup():
     return signup()
 
-@app.get('/api/get-saved-session')
+@app.get('/api/get-saved-session') # type: ignore
 def endpoint_get_saved_session():
     return get_saved_session()
 

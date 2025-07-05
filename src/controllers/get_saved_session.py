@@ -5,6 +5,7 @@ def get_saved_session():
     payload, error_msg, status_code = verify_token()
     if error_msg:
         return error_msg, status_code
+    
 
     user = get_user_by_id(payload["userId"])
     if not user:
