@@ -6,11 +6,6 @@ from src.db.db_init import User, get_session
 # from src.api_types import SignupRequest
 from src.validators.validate_signup import validate_signup_body
 from src.jwt.generate_token import generate_token
-from flask import request as req, make_response, jsonify
-from src.db.db_init import User, get_session
-from src.validators.validate_signup import validate_signup_body
-from src.jwt.generate_token import generate_token
-
 
 def signup():
     body = req.get_json(silent=True)
