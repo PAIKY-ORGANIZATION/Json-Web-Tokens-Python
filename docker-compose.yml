@@ -4,7 +4,7 @@ services:
     ports:
       - 3004:3004
     volumes:
-      - .:/app
+      - ./src:/app/src
     command: bash script.sh dev_docker
     depends_on:
       - db

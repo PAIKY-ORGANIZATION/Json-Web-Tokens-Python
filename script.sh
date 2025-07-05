@@ -10,7 +10,16 @@ case $1 in
     ;;
 
     dev_docker)
-        ENVIRONMENT=docker python3 app_listens.py
+        watchmedo auto-restart \
+            --patterns="*.py" \
+            --recursive \
+            -- bash -c "ENVIRONMENT=docker python3 -u app_listens.py"#! -u: Unbuffered output ...... Meaning that we will see output like print() statements in the terminal. When running on Docker they are not shown by default.
+             #$ To a load the environment variable along the main command you need to wrap this in "bash -c"
+
+
+
+
+        
     ;;
 
 esac
