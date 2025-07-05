@@ -1,10 +1,8 @@
-from sqlalchemy import create_engine, Column, String, Integer
-
-
-from sqlalchemy.ext.declarative import declarative_base #$ This is the class that we're going to extend.
-from sqlalchemy.orm import sessionmaker
 import os 
 import time
+from sqlalchemy import create_engine, Column, String, Integer
+from sqlalchemy.ext.declarative import declarative_base #$ This is the class that we're going to extend.
+from sqlalchemy.orm import sessionmaker
 
 
 
