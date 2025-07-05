@@ -1,7 +1,7 @@
 from flask import request as req
 from src.db.db_init import User, get_session
 from src.api_types import SignupRequest
-from validators.validate_signup import validate_signup_body
+from src.validators.validate_signup import validate_signup_body
 
 def signup():
 
