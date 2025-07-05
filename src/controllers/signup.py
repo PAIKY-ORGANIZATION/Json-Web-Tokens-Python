@@ -13,8 +13,9 @@ def signup():
     food = body["favorite_food"]
 
     #* Validate and optionally return error
-    error = validate_body(username, food)
-    if error: return error
+    validation = validate_signup_body(username, food)
+    if not validation["status"]:
+        return validation["message"], 400
 
     #* Save and optionally return error
     result = save_to_db(username, food)
@@ -27,12 +28,6 @@ def signup():
     return res
 
 
-
-
-def validate_body(username: Any, food: Any):
-    result = validate_signup_body(username, food) #% Returns something like {"status": True, "message": "Success"}
-    if not result["status"]:
-        return result["message"], 400
 
 
 def save_to_db(username: Any, food: Any):
