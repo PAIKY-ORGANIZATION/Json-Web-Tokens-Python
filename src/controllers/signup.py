@@ -14,6 +14,10 @@ def signup():
 
     #? Need to validate data
 
+    #* Validate data
+    if(not unique_username or not isinstance(unique_username, str)):
+        return "invalid username", 400
+
     #* Check if the user already exists.
     saved = session.query(User).filter(User.username == unique_username).first()
     if saved: return "User already exitss"

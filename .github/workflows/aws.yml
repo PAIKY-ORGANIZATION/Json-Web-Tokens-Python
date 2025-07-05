@@ -39,5 +39,5 @@ jobs:
               #! JWT_SECRET must be set per-repository
 
               #! Did  not include tests in this py project
-              sudo docker compose down --remove-orphans
+              sudo docker compose down --remove-orphans #! For some reason I've noticed that sometimes the flask back end doesn't truly shut down so the container fails to start again. Add "--remove-orphans"
               sudo docker compose up --build -d
