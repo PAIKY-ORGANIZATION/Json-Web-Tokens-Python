@@ -1,11 +1,11 @@
 from typing import Any
 from typing import cast
-from flask import request as req, make_response
+from flask import request as req, make_response, jsonify
 from src.db.db_init import User, get_session
 from src.api_types import SignupRequest
 from src.validators.validate_signup import validate_signup_body
 from src.jwt.generate_token import generate_token
-
+from src.api_types import ServerResponse
 
 def signup():
     body: SignupRequest = req.get_json()
@@ -23,7 +23,16 @@ def signup():
         return result # type: ignore
 
     user_id = result
-    res = make_response("Success")
+
+    response: ServerResponse = {
+        "message": "Signed up successful",
+        "success": False,
+        "data": {
+            "user_id": user_id
+        }
+    }
+
+    res = make_response(jsonify(response))
     generate_token(user_id=user_id, res=res)
     return res
 
@@ -34,7 +43,7 @@ def save_to_db(username: Any, food: Any):
     session = get_session()
 
     if session.query(User).filter_by(username=username).first():
-        return "User already exists", 400
+        return jsonify({"message": "User already exists", "success": False}), 400
 
     user = User(username=username, favorite_food=food)
     session.add(user)

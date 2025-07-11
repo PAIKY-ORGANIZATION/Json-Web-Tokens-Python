@@ -12,16 +12,23 @@
 
 ### Run with Docker Compose (recommended if you have Docker, includes a Postgres service and works out of the box):
 
-### For Linux/MacOS:
+### Install Dependencies:
 
 ```bash
-   ./bin/bash script.sh dev_docker
+   pip install -r requirements.txt
+```
+
+
+### For Linux/MacOS:
+(Assuming you have a "bash" shell)
+```bash
+   /bin/bash script.sh dev_docker
 ```
 
 How to run locally:
 
 ```bash
-   ./bin/bash script.sh dev
+   /bin/bash script.sh dev
 ```
 
 
