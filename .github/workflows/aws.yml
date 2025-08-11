@@ -15,10 +15,10 @@ jobs:
         uses: appleboy/ssh-action@v1.0.0
 
         with:
-          host: ${{vars.EC2_HOST_PAID_INSTANCE}} #$ for SSH, don't include port unless not using :22 . Example: 132.84.129.77.
-          username: ${{secrets.EC2_USER}}
-          key: ${{secrets.EC2_SSH_PRIVATE_KEY}}
-          passphrase: ${{ secrets.EC2_SSH_PRIVATE_KEY_PASSPHRASE }} #$ Only if required.
+          host: ${{vars.HETZNER_HOST_PAID_INSTANCE}} 
+          username: ${{secrets.HETZNER_USER}} #* Currently hosted on Heztner
+          key: ${{secrets.HETZNER_SSH_PRIVATE_KEY}}
+          passphrase: ${{ secrets.PRIVATE_KEY_PASSPHRASE }} 
         
           script: |
               UNIQUE_APP_NAME="${{ secrets.UNIQUE_APP_NAME }}"  #! UNIQUE_APP_NAME must be all lowercase and without underscores for Docker to accept it.
